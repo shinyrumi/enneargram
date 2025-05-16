@@ -1,7 +1,11 @@
 import streamlit as st
-st.title("enneargram")
-st.write("Hello")
+import streamlit.components.v1 as components # components.html을 사용하기 위해 import
 
+st.title("enneargram") # 'enneagram'이 아닐까요? :)
+st.write("Hello, 에니어그램 테스트에 오신 것을 환영합니다!") # 간단한 안내 문구 추가
+
+# 제공해주신 HTML, CSS, JavaScript 코드를 하나의 큰 문자열로 만듭니다.
+html_code = """
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -99,7 +103,7 @@ st.write("Hello")
             width: 0;
         }
         .rating-options input[type="radio"]:focus-visible + label { 
-             box-shadow: 0 0 0 2px #FF69B4;
+            box-shadow: 0 0 0 2px #FF69B4;
         }
         
         .button-container {
@@ -202,7 +206,7 @@ st.write("Hello")
             color: #C71585; /* MediumVioletRed */
         }
 
-         /* 모바일 환경 최적화 */
+        /* 모바일 환경 최적화 */
         @media (max-width: 768px) {
             #test-container h1 { font-size: 2rem; }
             #step-title { font-size: 1.5rem; }
@@ -210,7 +214,7 @@ st.write("Hello")
             .question-item p { font-size: 0.9rem; }
             .rating-options label { padding: 0.6rem 0.9rem; font-size: 0.85rem; }
             .rating-options { justify-content: space-evenly; }
-            #options-area { max-h-[65vh]; }
+            #options-area { max-height: 65vh; } /* 오타 수정: max-h-[65vh] -> max-height: 65vh */
             #prev-button, #next-button, #restart-button { font-size: 1rem; }
             .result-section h3 { font-size: 1.2rem; }
             .result-section p { font-size: 0.9rem; }
@@ -230,7 +234,7 @@ st.write("Hello")
         </div>
 
         <div id="options-area" class="space-y-4 mb-6 max-h-[60vh] overflow-y-auto pr-2 pb-2">
-            </div>
+        </div>
         
         <div class="button-container">
             <button id="prev-button" class="hidden">⏪ 이전</button>
@@ -244,7 +248,7 @@ st.write("Hello")
         <div id="result-area" class="mt-10 p-6 bg-gray-50 rounded-lg shadow-inner hidden">
             <h2 class="text-2xl md:text-3xl font-semibold text-gray-800 mb-6 text-center">🌟 당신의 에니어그램 분석 결과 🌟</h2>
             <div id="result-content" class="space-y-4 text-gray-700">
-                </div>
+            </div>
             <button id="restart-button" class="mt-8">다시 시작! 🌱</button>
         </div>
         <footer>
@@ -346,7 +350,7 @@ st.write("Hello")
                         }
                     }
                 },
-                 2: { 
+                2: { 
                     name: "2번: 조력가", 
                     description: "타인의 필요에 민감하게 반응하며, 따뜻함과 친절함으로 다른 사람을 돕고자 하는 강한 욕구를 가집니다. 관계를 매우 중요하게 생각하며, 사랑받고 인정받기 위해 노력합니다. 공감 능력이 뛰어나지만, 때로는 자신의 필요를 간과하고 타인에게 지나치게 관여하거나 소유욕을 보일 수 있습니다. 거절에 민감하고 칭찬과 감사에 큰 의미를 둡니다. 이들은 타인과의 연결을 통해 자신의 가치를 확인하려는 경향이 있으며, 종종 '나는 필요한 사람인가?'라는 질문을 스스로에게 던집니다.",
                     subtypes: {
@@ -744,12 +748,12 @@ st.write("Hello")
         let currentStep = 0; 
         const userChoices = {
             center: null, 
-            type: null,   
+            type: null,  
             subtype: null 
         };
         let previousChoices = []; // 이전 단계 선택 저장용
         let centerScores = {}; 
-        let typeScores = {};   
+        let typeScores = {};  
         let subtypeScores = {}; 
 
         const stepIndicatorEl = document.getElementById('step-indicator');
@@ -822,7 +826,7 @@ st.write("Hello")
                 prevButtonEl.classList.add('hidden'); // 결과 화면에서는 이전 버튼 숨김
                 nextButtonEl.classList.add('hidden'); // 결과 화면에서는 다음 버튼 숨김
             }
-             // 이전 단계의 선택 복원
+            // 이전 단계의 선택 복원
             if (previousChoices[currentStep]) {
                 previousChoices[currentStep].forEach(choice => {
                     const radio = document.querySelector(`input[name="${choice.name}"][value="${choice.value}"]`);
@@ -835,11 +839,12 @@ st.write("Hello")
             const questionDiv = document.createElement('div');
             questionDiv.classList.add('question-item');
             const uniqueName = nameAttribute.startsWith('q_center_') ? `q_center_${questionBaseId}` :
-                               nameAttribute.startsWith('q_type_') ? `q_type_${questionBaseId}` :
-                               `q_subtype_${questionBaseId}`;
+                                nameAttribute.startsWith('q_type_') ? `q_type_${questionBaseId}` :
+                                `q_subtype_${questionBaseId}`;
 
             questionDiv.innerHTML = `
-                <p class="mb-3 text-gray-700">${questionText}</p> <div class="rating-options space-x-1 flex flex-wrap justify-center md:justify-start">
+                <p class="mb-3 text-gray-700">${questionText}</p>
+                <div class="rating-options space-x-1 flex flex-wrap justify-center md:justify-start">
                     ${[1,2,3,4,5].map(val => `
                         <input type="radio" id="${uniqueName}_${val}" name="${uniqueName}" value="${val}" class="sr-only">
                         <label for="${uniqueName}_${val}">${val}점</label>
@@ -903,9 +908,9 @@ st.write("Hello")
                     subtypeScores = {};
                     previousChoices.splice(2); // 3단계, 4단계 선택 기록 삭제
                 } else if (currentStep === 2) { // 3단계로 돌아가면 subtype 초기화
-                     userChoices.subtype = null;
-                     subtypeScores = {};
-                     previousChoices.splice(3); // 4단계 선택 기록 삭제
+                    userChoices.subtype = null;
+                    subtypeScores = {};
+                    previousChoices.splice(3); // 4단계 선택 기록 삭제
                 }
                 renderStep();
                 optionsAreaEl.scrollTop = 0;
@@ -947,7 +952,7 @@ st.write("Hello")
                         dominantCenterId = centerId;
                     } else if (centerScores[centerId] === maxCenterScore) { 
                         if (dominantCenterId === null || (centerOrder.indexOf(centerId) < centerOrder.indexOf(dominantCenterId))) {
-                             dominantCenterId = centerId;
+                            dominantCenterId = centerId;
                         }
                     }
                 }
@@ -1027,7 +1032,7 @@ st.write("Hello")
                         maxSubtypeScore = subtypeScores[subKey];
                         dominantSubtypeKey = subKey;
                     } else if (subtypeScores[subKey] === maxSubtypeScore) {
-                         if (dominantSubtypeKey === null || (subtypeOrder.indexOf(subKey) < subtypeOrder.indexOf(dominantSubtypeKey))) {
+                        if (dominantSubtypeKey === null || (subtypeOrder.indexOf(subKey) < subtypeOrder.indexOf(dominantSubtypeKey))) {
                             dominantSubtypeKey = subKey;
                         }
                     }
@@ -1040,7 +1045,7 @@ st.write("Hello")
             
             currentStep++;
             if (currentStep < 3) { 
-                 document.getElementById('options-area').scrollTop = 0;
+                document.getElementById('options-area').scrollTop = 0;
             }
             renderStep();
         });
@@ -1070,3 +1075,13 @@ st.write("Hello")
     </script>
 </body>
 </html>
+"""
+
+# Streamlit 컴포넌트를 사용하여 HTML 렌더링
+# height는 HTML 내용이 충분히 보일 수 있도록 적절히 조절해주세요.
+# 일반적으로 JavaScript를 포함한 동적 컨텐츠는 높이를 예측하기 어려우므로,
+# 충분한 값을 주거나, scrolling=True 옵션을 고려할 수 있습니다.
+components.html(html_code, height=800, scrolling=True)
+
+# 또는 st.markdown을 사용할 수도 있습니다.
+# st.markdown(html_code, unsafe_allow_html=True)
